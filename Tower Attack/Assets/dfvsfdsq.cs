@@ -12,5 +12,10 @@ public class dfvsfdsq : MonoBehaviour
         transform = GetComponent<Transform>();
     }
 
-        
+    private void Start()
+    {
+        transform.position = new Vector3(0f, 1f, 0.2f);
+    }
+
+
 }
