@@ -21,11 +21,13 @@ public class AIPathFindingCustom : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
+        // Check where is the target and draw a path.
         seeker.StartPath(rb.position, target.position, OnPathComplete);
     }
 
     void OnPathComplete(Path p)
     {
+        // Reset the path if a error happen
         if (!p.error)
         {
             path = p;
