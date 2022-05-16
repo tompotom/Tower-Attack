@@ -88,7 +88,7 @@ public class AIPathFindingCustom : MonoBehaviour
             Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(worldPoint);
             mouseWorldPosition.z = 0f;
 
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.transform.position, mouseWorldPosition, 100f);
+            //RaycastHit2D hit = Physics2D.Raycast(Camera.main.transform.position, mouseWorldPosition, 100f);
 
             GameObject newWaypoint = Instantiate(wayPoint, mouseWorldPosition, Quaternion.identity);
 
@@ -104,11 +104,18 @@ public class AIPathFindingCustom : MonoBehaviour
             Debug.DrawLine(Camera.main.transform.position, mouseWorldPosition, Color.green, 1f);
         }
 
-        if (pressStart && move)
+        if (pressStart)
         {
-            rb.MovePosition(wayPoints[currentWaypoint].transform.position);
+            var currentPos = wayPoints[currentWaypoint].transform.position;
+            var speedOnDeltaTime = speed * Time.deltaTime;
+            var newPosition = Vector3.MoveTowards(transform.position, currentPos, speedOnDeltaTime);
 
-            if (transform.position == wayPoints[currentWaypoint].transform.position)
+            rb.MovePosition(newPosition);
+            
+
+            //transform.Translate(newPos * speedOnDeltaTime);
+
+            if (transform.position == newPosition)
             {
                 currentWaypoint++;
             }
@@ -117,12 +124,6 @@ public class AIPathFindingCustom : MonoBehaviour
             {
                 ClearPath();
             }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            touchStartedOnPlayer = false;
-            move = true;
         }
     }
 
@@ -138,5 +139,13 @@ public class AIPathFindingCustom : MonoBehaviour
         currentWaypoint = 0;
 
         pressStart = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Collision"))
+        {
+            Debug.Log("touché");
+        }
     }
 }
