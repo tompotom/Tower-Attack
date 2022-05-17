@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Collision
+  - Target
   layers:
   - Default
   - TransparentFX
@@ -39,6 +40,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2902599561
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Below
+    uniqueID: 1891405843
+    locked: 0
+  - name: Above
+    uniqueID: 2643092535
     locked: 0
