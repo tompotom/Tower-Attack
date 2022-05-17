@@ -159,7 +159,7 @@ public class AIPathFindingCustom : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Target")
+        if (collision.tag == "Target")
         {
             Debug.Log("WIN !");
         }
