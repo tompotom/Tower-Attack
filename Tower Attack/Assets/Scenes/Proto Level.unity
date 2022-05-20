@@ -11439,6 +11439,7 @@ MonoBehaviour:
   speed: 20
   nextWaypointDist: 1
   timeForNextRay: 0.05
+  isAutoPathFinding: 1
   wayPoint: {fileID: 5720696625861120759, guid: 47f111644a0d9964ca6723625122b3c3, type: 3}
   wayPoints: []
 --- !u!58 &725846192

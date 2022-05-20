@@ -15,6 +15,7 @@ public class AIPathFindingCustom : MonoBehaviour
     [SerializeField] private float speed = 200f;
     [SerializeField] private float nextWaypointDist = 3f;
     [SerializeField] private float timeForNextRay = 0.05f;
+    [SerializeField] private bool isAutoPathFinding = false;
 
     [Header("Prefabs & List")]
     [SerializeField] private GameObject wayPoint;
@@ -64,8 +65,14 @@ public class AIPathFindingCustom : MonoBehaviour
 
     private void FixedUpdate()
     {
-        AIPath();
-        DrawPath();   
+        if (isAutoPathFinding)
+        {
+            AIPath();
+        }
+        else
+        {
+            DrawPath();
+        }
     }
 
     void OnPathComplete(Path p)
