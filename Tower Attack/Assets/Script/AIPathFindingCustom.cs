@@ -30,10 +30,7 @@ public class AIPathFindingCustom : MonoBehaviour
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
     private float timer = 0f;
-    private int currenWayPoint = 0;
     private int wayIndex;
-    private bool move;
-    private bool touchStartedOnPlayer;
     private bool pressStart = false;
 
     void Start()
@@ -41,14 +38,10 @@ public class AIPathFindingCustom : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
-        move = false;
-        touchStartedOnPlayer = false;
-
-
         LineRendererSettings();
 
         // Check where is the target and draw a path.
-        //seeker.StartPath(rb.position, target.position, OnPathComplete);
+        seeker.StartPath(rb.position, target.position, OnPathComplete);
     }
 
     void LineRendererSettings()
@@ -71,6 +64,7 @@ public class AIPathFindingCustom : MonoBehaviour
 
     private void FixedUpdate()
     {
+        AIPath();
         DrawPath();   
     }
 
@@ -81,6 +75,39 @@ public class AIPathFindingCustom : MonoBehaviour
         {
             path = p;
             currentWaypoint = 0;
+        }
+    }
+
+    void AIPath()
+    {
+        if (path == null)
+        {
+            return;
+        }
+
+        if (currentWaypoint >= path.vectorPath.Count)
+        {
+            reachedEndOfPath = true;
+            return;
+        }
+        else
+        {
+            reachedEndOfPath = false;
+        }
+
+        Vector2 targetPos = new Vector2(target.position.x, target.position.y);
+        var force = speed * Time.deltaTime;
+        var newPosition = Vector3.MoveTowards(transform.position, path.vectorPath[currentWaypoint], force);
+
+        Debug.Log(path.vectorPath[currentWaypoint]);
+
+        rb.MovePosition(newPosition);
+
+        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+
+        if (distance < nextWaypointDist)
+        {
+            currentWaypoint++;
         }
     }
 
@@ -140,8 +167,6 @@ public class AIPathFindingCustom : MonoBehaviour
 
     void ClearPath()
     {
-        move = false;
-
         foreach (var item in wayPoints) Destroy(item);
         wayPoints.Clear();
         wayIndex = 1;
