@@ -21,6 +21,8 @@ public class AIPathFindingCustom : MonoBehaviour
     [SerializeField] private GameObject wayPoint;
     [SerializeField] List<GameObject> wayPoints;
 
+    [SerializeField] LayerMask layer;
+
     // Components
     Path path;
     Seeker seeker;
@@ -32,12 +34,17 @@ public class AIPathFindingCustom : MonoBehaviour
     bool reachedEndOfPath = false;
     private float timer = 0f;
     private int wayIndex;
-    private bool pressStart = false;
+    private bool isPressingStart = false;
 
-    void Start()
+    private void Awake()
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    void Start()
+    {
+
 
         LineRendererSettings();
 
@@ -59,7 +66,7 @@ public class AIPathFindingCustom : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            pressStart = true;
+            isPressingStart = true;
         }
     }
 
@@ -131,28 +138,40 @@ public class AIPathFindingCustom : MonoBehaviour
             Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(worldPoint);
             mouseWorldPosition.z = 0f;
 
-            if (mouseWorldPosition == temporaryWaypointValues)
+            Ray ray = Camera.main.ScreenPointToRay(worldPoint);
+
+            RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+
+            Debug.DrawRay(ray.origin, ray.direction * 20);
+
+            if (hit.collider.CompareTag("Background"))
             {
-                return;
+                return; 
             }
+            else if (hit.collider.CompareTag("Path"))
+            {
+                if (mouseWorldPosition == temporaryWaypointValues)
+                {
+                    return;
+                }
 
-            temporaryWaypointValues = mouseWorldPosition;
+                temporaryWaypointValues = mouseWorldPosition;
 
-            GameObject newWaypoint = Instantiate(wayPoint, mouseWorldPosition, Quaternion.identity, waypointParent);
+                GameObject newWaypoint = Instantiate(wayPoint, mouseWorldPosition, Quaternion.identity, waypointParent);
 
-            wayPoints.Add(newWaypoint);
+                wayPoints.Add(newWaypoint);
 
-            lineRenderer.positionCount = wayIndex + 1;
-            lineRenderer.SetPosition(wayIndex, newWaypoint.transform.position);
+                lineRenderer.positionCount = wayIndex + 1;
+                lineRenderer.SetPosition(wayIndex, newWaypoint.transform.position);
 
-            timer = 0;
+                timer = 0;
 
-            wayIndex++;
-
-            Debug.DrawLine(Camera.main.transform.position, mouseWorldPosition, Color.green, 1f);
+                wayIndex++;
+            }
+            //Debug.DrawLine(Camera.main.transform.position, mouseWorldPosition, Color.green, 1f);   
         }
 
-        if (pressStart)
+        if (isPressingStart)
         {
             var currentPos = wayPoints[currentWaypoint].transform.position;
             var speedOnDeltaTime = speed * Time.deltaTime;
@@ -162,6 +181,8 @@ public class AIPathFindingCustom : MonoBehaviour
 
             if (transform.position == newPosition)
             {
+                Destroy(wayPoints[currentWaypoint]);
+                
                 currentWaypoint++;
             }
 
@@ -170,7 +191,24 @@ public class AIPathFindingCustom : MonoBehaviour
                 ClearPath();
             }
         }
+
     }
+
+    //void DrawPathOffscreen()
+    //{
+    //    if (!waypointOffscreen.IsOffScreen)
+    //    {
+    //        return;
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("aaaa");
+    //        if (currentWaypoint == wayPoints.Count)
+    //        {
+    //            Destroy(wayPoints[currentWaypoint]);
+    //        }
+    //    }
+    //}
 
     void ClearPath()
     {
@@ -180,7 +218,7 @@ public class AIPathFindingCustom : MonoBehaviour
         currentWaypoint = 0;
 
         ClearLineRenderer();
-        pressStart = false;
+        isPressingStart = false;
     }
 
     void ClearLineRenderer()

@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Target
+  - Offscreen
+  - Path
+  - Tower
+  - Background
   layers:
   - Default
   - TransparentFX
@@ -13,7 +17,7 @@ TagManager:
   - Water
   - UI
   - Collision
-  - 
+  - Ignore
   - 
   - 
   - 
