@@ -6,11 +6,11 @@ using UnityEngine;
 public class Towers : MonoBehaviour
 {
     Detection _detection;
-    Transform _troopToShoot;
     float _timeToShoot;
     [SerializeField] float _delayBeforeNextShot = 1f;
     bool _canShoot;
     [SerializeField] GameObject _projectile;
+    
 
     void Start()
     {
@@ -21,18 +21,10 @@ public class Towers : MonoBehaviour
     {
         if(_detection.TroopsInRange.Count > 0)
         {
-            WhereToShoot();
             ShootSpeed();
-            ProjectileInitialPosition();
             Shoot();
+
         }
-    }
-
-
-
-    private void WhereToShoot()
-    {
-        _troopToShoot = _detection.TroopsInRange[0].transform;
     }
 
     private void ShootSpeed()
@@ -48,15 +40,11 @@ public class Towers : MonoBehaviour
         }
     }
 
-    private void ProjectileInitialPosition()
-    {
-
-    }
     private void Shoot()
     {
         if(_canShoot)
         {
-            
+            Instantiate(_projectile, transform.position, _projectile.transform.rotation, transform);
         }
     }
 

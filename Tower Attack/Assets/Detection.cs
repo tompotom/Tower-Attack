@@ -5,7 +5,6 @@ using UnityEngine;
 public class Detection : MonoBehaviour
 {
 
-    Towers _towers;
 
     List<GameObject> _troopsInRange = new List<GameObject>();
 
@@ -13,7 +12,7 @@ public class Detection : MonoBehaviour
 
     private void Start()
     {
-        _towers = GameObject.FindGameObjectWithTag("Troop").GetComponent<Towers>();
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
