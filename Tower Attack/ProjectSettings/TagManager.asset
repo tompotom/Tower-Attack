@@ -9,6 +9,7 @@ TagManager:
   - Path
   - Tower
   - Background
+  - Spawner
   layers:
   - Default
   - TransparentFX
