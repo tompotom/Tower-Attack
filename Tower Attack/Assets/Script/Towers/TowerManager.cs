@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Towers : MonoBehaviour
+public class TowerManager : MonoBehaviour
 {
     Detection _detection;
     float _timeToShoot;

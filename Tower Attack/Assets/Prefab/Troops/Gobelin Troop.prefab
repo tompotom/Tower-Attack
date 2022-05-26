@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 3478714989366951142}
   - component: {fileID: 8484571287855517650}
   - component: {fileID: 8911900421494237733}
+  - component: {fileID: 6885751872201431593}
   m_Layer: 0
-  m_Name: Troop
+  m_Name: Gobelin Troop
   m_TagString: Troop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,3 +134,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6885751872201431593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4263719904291696515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1325c5564dc2b264b81bb5efc8a3f590, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  troop: {fileID: 11400000, guid: a48bd178f62de124790d22d21db25c0b, type: 2}
