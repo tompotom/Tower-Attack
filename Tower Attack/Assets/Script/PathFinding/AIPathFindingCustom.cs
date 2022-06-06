@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using System.Linq;
 
 public class AIPathFindingCustom : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class AIPathFindingCustom : MonoBehaviour
     [SerializeField] private float speed = 200f;
     [SerializeField] private float nextWaypointDist = 3f;
     [SerializeField] private float timeForNextRay = 0.05f;
+    [SerializeField] private int distBetweenNextWay;
     [SerializeField] private bool isAutoPathFinding = false;
 
     [Header("Prefabs & List")]
@@ -44,7 +46,7 @@ public class AIPathFindingCustom : MonoBehaviour
 
     void Start()
     {
-
+        InstantiateWaypointsOnStart();
 
         LineRendererSettings();
 
@@ -80,6 +82,8 @@ public class AIPathFindingCustom : MonoBehaviour
         {
             DrawPath();
         }
+
+        Debug.Log(isAutoPathFinding);
     }
 
     void OnPathComplete(Path p)
@@ -139,14 +143,11 @@ public class AIPathFindingCustom : MonoBehaviour
             mouseWorldPosition.z = 0f;
 
             Ray ray = Camera.main.ScreenPointToRay(worldPoint);
-
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-
-            Debug.DrawRay(ray.origin, ray.direction * 20);
 
             if (hit.collider.CompareTag("Background"))
             {
-                return; 
+                return;
             }
             else if (hit.collider.CompareTag("Path"))
             {
@@ -157,18 +158,22 @@ public class AIPathFindingCustom : MonoBehaviour
 
                 temporaryWaypointValues = mouseWorldPosition;
 
-                GameObject newWaypoint = Instantiate(wayPoint, mouseWorldPosition, Quaternion.identity, waypointParent);
+                var firstIndex = wayPoints.Last().transform.position;
 
-                wayPoints.Add(newWaypoint);
+                if (Vector2.Distance(firstIndex, mouseWorldPosition) <= distBetweenNextWay)
+                {
+                    GameObject newWaypoint = Instantiate(wayPoint, mouseWorldPosition, Quaternion.identity, waypointParent);
 
-                lineRenderer.positionCount = wayIndex + 1;
-                lineRenderer.SetPosition(wayIndex, newWaypoint.transform.position);
+                    wayPoints.Add(newWaypoint);
 
-                timer = 0;
+                    lineRenderer.positionCount = wayIndex + 1;
+                    lineRenderer.SetPosition(wayIndex, newWaypoint.transform.position);
 
-                wayIndex++;
+                    timer = 0;
+
+                    wayIndex++;
+                }       
             }
-            //Debug.DrawLine(Camera.main.transform.position, mouseWorldPosition, Color.green, 1f);   
         }
 
         if (isPressingStart)
@@ -194,22 +199,6 @@ public class AIPathFindingCustom : MonoBehaviour
 
     }
 
-    //void DrawPathOffscreen()
-    //{
-    //    if (!waypointOffscreen.IsOffScreen)
-    //    {
-    //        return;
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("aaaa");
-    //        if (currentWaypoint == wayPoints.Count)
-    //        {
-    //            Destroy(wayPoints[currentWaypoint]);
-    //        }
-    //    }
-    //}
-
     void ClearPath()
     {
         foreach (var item in wayPoints) Destroy(item);
@@ -226,6 +215,13 @@ public class AIPathFindingCustom : MonoBehaviour
         lineRenderer.positionCount = 1;
         lineRenderer.enabled = false;
     }
+    void InstantiateWaypointsOnStart()
+    {
+        GameObject newWaypoint = Instantiate(wayPoint, transform.position, Quaternion.identity, waypointParent);
+
+        wayPoints.Add(newWaypoint);
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
