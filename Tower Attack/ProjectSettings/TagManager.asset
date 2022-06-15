@@ -11,6 +11,7 @@ TagManager:
   - Background
   - Spawner
   - Troop
+  - Zone
   layers:
   - Default
   - TransparentFX
