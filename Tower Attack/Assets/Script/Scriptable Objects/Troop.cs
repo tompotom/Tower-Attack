@@ -5,9 +5,11 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Troop : ScriptableObject
 {
-    public new string name;
+    public string Name;
     public int HP;
-    public int speed;
+    public int Defense;
+    public int Damage;
+    public int Agility;
     public Sprite sprite;
 
 }

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628d085abc128d6449752bd582f71ee0, type: 3}
   m_Name: Warrior
   m_EditorClassIdentifier: 
-  name: Warrior
-  HP: 5
-  speed: 20
-  sprite: {fileID: 0}
+  Name: Warrior
+  HP: 50
+  Defense: 40
+  Damage: 20
+  Agility: 5
+  sprite: {fileID: 21300000, guid: efb2cefee5fa4d749af5bfe492a0b645, type: 3}
